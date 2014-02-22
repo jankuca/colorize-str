@@ -21,4 +21,11 @@ for (var y = 0; y < rows; y++) {
 	}
 	process.stdout.write("\n");
 }
+process.stdout.write("\n");
+
+process.stdout.write(colStr('{#fff}From white to dark gray{>#333} and then gradient to red{>#f00}.\n'));
+process.stdout.write(colStr('{#f00}red {#0f0}green gradient to black{>#000} {#00f}blue\n'));
+process.stdout.write(colStr('{#fff;#000}white text on gray gradient from black to white.{#fff;>#fff}\n'));
+process.stdout.write(colStr('{#fff;#000}Gray crossfading gradient{>#000;>#fff}'));
+process.stdout.write('\n');
 

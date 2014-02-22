@@ -39,6 +39,41 @@ function colorize(str, color, bgcolor) {
 	}
 }
 
+function colorizeGradient(str, color0, bgcolor0, color1, bgcolor1) {
+	if (str.length < 2 || (findClosest(color0) == findClosest(color1) && findClosest(bgcolor0) == findClosest(bgcolor1))) return colorize(str, color0, bgcolor0);
+	if (color0 !== null && color1 !== null) {
+		var rstep = (color0[0] - color1[0]) / str.length;
+		var gstep = (color0[1] - color1[1]) / str.length;
+		var bstep = (color0[2] - color1[2]) / str.length;
+	}
+	if (bgcolor0 !== null && bgcolor1 !== null) {
+		var bgrstep = (bgcolor0[0] - bgcolor1[0]) / str.length;
+		var bggstep = (bgcolor0[1] - bgcolor1[1]) / str.length;
+		var bgbstep = (bgcolor0[2] - bgcolor1[2]) / str.length;
+	}
+	var result = ''
+	for (var i = 0; i < str.length; i++) {
+		if (typeof (rstep) !== 'undefined') {
+			var color = [ Math.round(color0[0] - (rstep * i)), Math.round(color0[1] - (gstep * i)), Math.round(color0[2] - (bstep * i)) ];
+		}
+		if (typeof (bgrstep) !== 'undefined') {
+			var bgcolor = [ Math.round(bgcolor0[0] - (bgrstep * i)), Math.round(bgcolor0[1] - (bggstep * i)), Math.round(bgcolor0[2] - (bgbstep * i)) ];
+		}
+
+		if (typeof (color) !== 'undefined') {
+			if (typeof (bgcolor) === 'undefined') {
+				result += clc.xterm(findClosest(color))(str.substr(i, 1));
+			} else {
+				result += clc.xterm(findClosest(color)).bgXterm(findClosest(bgcolor))(str.substr(i, 1));
+			}
+		} else {
+			result += clc.bgXterm(findClosest(bgcolor))(str.substr(i, 1));
+		}
+
+	}
+	return result;
+}
+
 module.exports = function(str) {
 
 	var color = null;
@@ -54,7 +89,6 @@ module.exports = function(str) {
 		var prevbgcolor = bgcolor;
 
 		str = str.split(m[0], 2);
-		result += colorize(str[0], color, bgcolor);
 
 		gradientFg = false;
 		gradientBg = false;
@@ -79,10 +113,18 @@ module.exports = function(str) {
 			color = colorString.getRgb(strsplit[0]);
 			bgcolor = colorString.getRgb(strsplit[1]);
 		}
+
+		if (gradientFg || gradientBg) {
+			result += colorizeGradient(str[0], prevcolor, prevbgcolor, color, bgcolor);
+		} else {
+			result += colorize(str[0], prevcolor, prevbgcolor);
+		}
+
 		str = str[1];
 
-}
+	}
 	result += colorize(str, color, bgcolor);
+
 	return result;
 };
 
