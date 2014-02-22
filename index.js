@@ -83,6 +83,8 @@ module.exports = function(str) {
 	var gradientFg = false;
 	var gradientBg = false;
 
+	var m;
+
 	while (m = str.match(/\{([^\{\}]*)\}/)) {
 
 		var prevcolor = color;
