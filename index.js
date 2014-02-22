@@ -15,7 +15,7 @@ function findClosest(color) {
 	}
 	var lowestDiff = 255 + 255 + 255;
 	var bestMatch = -1;
-	for (var i = 0; i < 256; i++) {
+	for (var i = 16; i < 256; i++) {
 		if (diff[i] < lowestDiff) {
 			lowestDiff = diff[i];
 			bestMatch = i;
@@ -44,19 +44,44 @@ module.exports = function(str) {
 	var color = null;
 	var bgcolor = null;
 	var result = '';
+
+	var gradientFg = false;
+	var gradientBg = false;
+
 	while (m = str.match(/\{([^\{\}]*)\}/)) {
+
+		var prevcolor = color;
+		var prevbgcolor = bgcolor;
+
 		str = str.split(m[0], 2);
 		result += colorize(str[0], color, bgcolor);
+
+		gradientFg = false;
+		gradientBg = false;
+
 		if (m[1].indexOf(';') === -1) {
+			if (m[1].substr(0, 1) === '>') {
+				gradientFg = true;
+				m[1] = m[1].substr(1);
+			}
 			color = colorString.getRgb(m[1]);
 			bgcolor = null;
 		} else {
 			var strsplit = m[1].split(';', 2);
+			if (strsplit[0].substr(0, 1) === '>') {
+				gradientFg = true;
+				strsplit[0] = strsplit[0].substr(1);
+			}
+			if (strsplit[1].substr(0, 1) === '>') {
+				gradientBg = true;
+				strsplit[1] = strsplit[1].substr(1);
+			}
 			color = colorString.getRgb(strsplit[0]);
 			bgcolor = colorString.getRgb(strsplit[1]);
 		}
 		str = str[1];
-	}
+
+}
 	result += colorize(str, color, bgcolor);
 	return result;
 };
