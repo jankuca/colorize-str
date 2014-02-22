@@ -47,7 +47,7 @@ module.exports = function(str) {
 	while (m = str.match(/\{([^\{\}]*)\}/)) {
 		str = str.split(m[0], 2);
 		result += colorize(str[0], color, bgcolor);
-		if (str.indexOf(';') === -1) {
+		if (m[1].indexOf(';') === -1) {
 			color = colorString.getRgb(m[1]);
 			bgcolor = null;
 		} else {
