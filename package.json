@@ -15,7 +15,10 @@
 		"color",
 		"colour"
 	],
-	"author": "alfreddatakillen",
+	"author": "Alfred Godoy <alfred@klandestino.se> (http://klandestino.se/)",
+	"contributors": [
+		"Alfred Godoy <alfred@klandestino.se> (http://klandestino.se/)"
+	],
 	"license": "GPLv3+",
 	"bugs": {
 		"url": "https://github.com/alfreddatakillen/colorize-str/issues"
