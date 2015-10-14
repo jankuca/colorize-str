@@ -85,7 +85,7 @@ module.exports = function(str) {
 
 	var m;
 
-	while (m = str.match(/\{([^\{\}]*)\}/)) {
+	while (m = str.match(/\{((?:#|>|rgb\()[^\{\}]*)\}/)) {
 
 		var prevcolor = color;
 		var prevbgcolor = bgcolor;
